@@ -10,11 +10,10 @@ export function MyInput({ text, type, state, setState, field}) {
     }
 
     return (
-        <Field label={text} required errorText={`${text} é obrigatório`}>
+        <Field maxW="sm" label={text} required errorText={`${text} é obrigatório`}>
             <Input 
                 placeholder={text} 
                 size="sm" 
-                maxW="sm" 
                 type={type}
                 value={state[field]}
                 onChange={handlerChange}

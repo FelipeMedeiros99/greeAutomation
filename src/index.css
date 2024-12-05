@@ -1,5 +1,16 @@
-body {
+body, html, #root {
   margin: 0;
-  background-color: aliceblue;
+  background-color: #e9e9e9;
   color: black;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+input, textarea{
+  background-color: white;
+  border: none;
+  box-shadow: 0 0 2px black;
 }
