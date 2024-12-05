@@ -1,19 +1,4 @@
-export function filterData(data, setData, text){
-
-    const regexName = /[A-Za-zÀ-ÖØ-öø-ÿ]+(?: [A-Za-zÀ-ÖØ-öø-ÿ]+)*/g;
-    const regexCep = /\b\d{2}[^A-Za-z0-9]?\d{3}[^A-Za-z0-9]?\d{3}\b/g;
-    const regexPhone = /\b(?:\(?\d{2}\)?\s?)9?\d{4}[^A-Za-z0-9]?\d{4}\b/g;
-    const regexCPF = /\b\d{3}[^A-Za-z0-9]?\d{3}[^A-Za-z0-9]?\d{3}[^A-Za-z0-9]?\d{2}\b/
-
-
-    const name = text.match(regexName)
-    const cep = text.match(regexCep)
-    const phone = text.match(regexPhone)
-    const cpf = text.match(regexCPF)
-
-    setData({...data, name, cep, phone, cpf})
-
-}
+import {cpf as validCpf} from "cpf-cnpj-validator";
 
 export function removeKeyWords(setText, text){
     let copyText = `${text}`
@@ -45,61 +30,62 @@ export function removeKeyWords(setText, text){
     setText(copyText)
 }
 
+export function filterData(setData, text){
+
+    const regexName = /[A-Za-zÀ-ÖØ-öø-ÿ]+(?: [A-Za-zÀ-ÖØ-öø-ÿ]+)*/g;
+    const regexCep = /\b\d{2}[^A-Za-z0-9]?\d{3}[^A-Za-z0-9]?\d{3}\b/g;
+    const regexPhone = /\b(?:\(?\d{2}\)?\s?)9?\d{4}[^A-Za-z0-9]?\d{4}\b/g;
+    const regexCPF = /\b\d{3}[^A-Za-z0-9]?\d{3}[^A-Za-z0-9]?\d{3}[^A-Za-z0-9]?\d{2}\b/
+
+
+    let name = text.match(regexName)
+    name = name?.map((n)=>n.toUpperCase())
+
+    let cep = text.match(regexCep)
+    cep = cep?.map((c)=>formatCep(c))
+    
+    let cpf = text.match(regexCPF)
+    cpf = cpf?.filter((c)=>validCpf.isValid(c))
+    cpf = cpf?.map((c)=>validCpf.format(c))
+    
+    let phone = text.match(regexPhone)
+    phone = phone?.filter((p)=> !validCpf.isValid(p))
+    phone = phone?.map((p)=>formatPhone(p))
+
+    setData({name: name, cep, phone, cpf})
+
+}
+
 export function formatData(data, setData){
     try{
-        let name = formatName(data.name);
-        let cpf = formatCpf(data.cpf);
-        let phone = formatPhone(data.phone);
-        let cep = formatCep(data.cep);
-
-        // console.log("name: ", name)
-        setData({...data, cpf: [cpf], name: [name], phone: [phone], cep: [cep]})
+        // let name = formatName(data, setData);
+        // let cpf = formatCpf(data.cpf);
+        // let phone = formatPhone(data.phone);
+        // let cep = formatCep(data.cep);
+        // console.log({name})
+        // setData({...data, cpf: [cpf], name: [name], phone: [phone], cep: [cep]})
     }catch(e){
         console.log(e)
     }
 }
 
-function formatCpf(cpf){
-    if(cpf.length > 0){
-        let filtercpf = cpf[0]?.split("")
-        filtercpf = filtercpf?.filter((num)=> !isNaN(num))
-        filtercpf.splice(3, 0, ".")
-        filtercpf.splice(7, 0, ".")
-        filtercpf.splice(11, 0, "-")
-
-        return filtercpf.join("")
-    }
-}
-
-function formatName(name){
-    if(name.length===1){
-        return name[0].toUpperCase()
-    }
-}
 
 function formatPhone(phone){
-    if(phone.length>0){
-        let filtredPhone = phone[0];
-        filtredPhone = filtredPhone.split("")
-        filtredPhone = filtredPhone.filter(char =>  !isNaN(char))
-        filtredPhone = filtredPhone.filter(char =>  char !==" ")
-        if(filtredPhone.length === 10){
-            filtredPhone.splice(2, 0, "9")
+        phone = phone.split("")
+        phone = phone.filter(char =>  !isNaN(char))
+        phone = phone.filter(char =>  char !==" ")
+        if(phone.length === 10){
+            phone.splice(2, 0, "9")
         }
-        filtredPhone.splice(0, 0, "(")
-        filtredPhone.splice(3, 0, ")")
-        filtredPhone.splice(4, 0, " ")
-        filtredPhone.splice(10, 0, "-")
-        return filtredPhone.join("")
-    }
+        phone.splice(0, 0, "(")
+        phone.splice(3, 0, ")")
+        phone.splice(9, 0, "-")
+        return phone.join("")
 }
 
 function formatCep(cep){
-    if(cep.length>0){
-        let filtredCep = cep[0];
-        filtredCep = filtredCep.split("")
-        filtredCep = filtredCep.filter(char =>  !isNaN(char))
-        filtredCep.splice(5, 0, "-")
-        return filtredCep.join("")
-    }
+        cep = cep.split("")
+        cep = cep.filter(char =>  !isNaN(char))
+        cep.splice(5, 0, "-")
+        return cep.join("")
 }

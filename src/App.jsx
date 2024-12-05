@@ -6,17 +6,24 @@ import { MyTextarea } from "./components/myComponents/textArea";
 import { filterData, formatData, removeKeyWords } from "./automatization/filter";
 import axios from "axios";
 
+let contador = 0
 function App() {
   const [loginData, setLoginData] = useState({email: "", password: ""})
   const [guestData, setGuestData] = useState("")
   const [userData, setUserData] = useState({name: "", cpf: "", phone: "", cep: ""})
+  contador += 1
 
-  console.log(userData)
   useEffect(()=>{
     removeKeyWords(setGuestData, guestData)
-    filterData(userData, setUserData, guestData)
-    formatData(userData, setUserData)
     
+  }, [guestData, userData])
+  
+  useEffect(()=>{
+    filterData(setUserData, guestData)
+  }, [guestData])
+  
+  useEffect(()=>{
+    // formatData(userData, setUserData)
   }, [guestData])
 
   function addGuest(e){
