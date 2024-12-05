@@ -23,10 +23,6 @@ export function removeKeyWords(setText, text){
     .replace("Contato", "")
     .replace("CEP", "")
 
-    copyText = copyText.split("\n")
-    copyText = copyText.map((data)=> data.trim())
-    copyText = copyText.join("\n")
-
     setText(copyText)
 }
 
