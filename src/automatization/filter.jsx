@@ -38,9 +38,64 @@ export function removeKeyWords(setText, text){
     .replace("CEP", "")
 
     copyText = copyText.split("\n")
-    copyText = copyText.filter((data)=>data!=="")
     copyText = copyText.map((data)=> data.trim())
     copyText = copyText.join("\n")
 
     setText(copyText)
+}
+
+export function formatData(data, setData){
+    try{
+        let name = formatName(data.name);
+        let cpf = formatCpf(data.cpf);
+        let phone = formatPhone(data.phone);
+        let cep = formatCep(data.cep);
+        console.log(cpf)
+        setData({...data, cpf: [cpf], name: [name], phone: [phone], cep: [cep]})
+    }catch(e){
+        console.log(e)
+    }
+}
+
+function formatCpf(cpf){
+    if(cpf.length > 0){
+        let filtercpf = cpf[0]?.split("")
+        filtercpf = filtercpf?.filter((num)=> !isNaN(num))
+        filtercpf.splice(3, 0, ".")
+        filtercpf.splice(7, 0, ".")
+        filtercpf.splice(11, 0, "-")
+
+        return filtercpf.join("")
+    }
+}
+
+function formatName(name){
+    if(name.length>0){
+        return name[0].toUpperCase()
+    }
+}
+
+function formatPhone(phone){
+    if(phone.length>0){
+        let filtredPhone = phone[0];
+        filtredPhone = filtredPhone.split("")
+        filtredPhone = filtredPhone.filter(char =>  !isNaN(char))
+        if(filtredPhone.length === 10){
+            filtredPhone.splice(2, 0, "9")
+        }
+        filtredPhone.splice(0, 0, "(")
+        filtredPhone.splice(3, 0, ") ")
+        filtredPhone.splice(9, 0, "-")
+        return filtredPhone.join("")
+    }
+}
+
+function formatCep(cep){
+    if(cep.length>0){
+        let filtredCep = cep[0];
+        filtredCep = filtredCep.split("")
+        filtredCep = filtredCep.filter(char =>  !isNaN(char))
+        filtredCep.splice(5, 0, "-")
+        return filtredCep.join("")
+    }
 }

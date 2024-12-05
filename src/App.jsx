@@ -3,7 +3,7 @@ import { MyInput } from "./components/myComponents/input";
 import { useEffect, useState } from "react";
 import { Button } from "./components/ui/button";
 import { MyTextarea } from "./components/myComponents/textArea";
-import { filterData, removeKeyWords } from "./automatization/filter";
+import { filterData, formatData, removeKeyWords } from "./automatization/filter";
 
 function App() {
   const [loginData, setLoginData] = useState({email: "", password: ""})
@@ -13,9 +13,10 @@ function App() {
   useEffect(()=>{
     removeKeyWords(setGuestData, guestData)
     filterData(userData, setUserData, guestData)
+    formatData(userData, setUserData)
     
   }, [guestData])
-
+  
   return (
     <Box as="form" display="flex" flexDir="column" alignItems="center" justifyContent="center" width="sm">
       <MyInput text="Email" type="text" state={loginData} setState={setLoginData} field="email"/>
