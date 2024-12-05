@@ -4,21 +4,28 @@ import { useEffect, useState } from "react";
 import { Button } from "./components/ui/button";
 import { MyTextarea } from "./components/myComponents/textArea";
 import { filterData, formatData, removeKeyWords } from "./automatization/filter";
+import axios from "axios";
 
 function App() {
   const [loginData, setLoginData] = useState({email: "", password: ""})
   const [guestData, setGuestData] = useState("")
   const [userData, setUserData] = useState({name: "", cpf: "", phone: "", cep: ""})
 
+  console.log(userData)
   useEffect(()=>{
     removeKeyWords(setGuestData, guestData)
     filterData(userData, setUserData, guestData)
     formatData(userData, setUserData)
     
   }, [guestData])
-  
+
+  function addGuest(e){
+    e.preventDefault()
+    axios.post("localhost:5000", {userData, loginData})
+  }
+
   return (
-    <Box as="form" display="flex" flexDir="column" alignItems="center" justifyContent="center" width="sm">
+    <Box as="form" display="flex" flexDir="column" alignItems="center" justifyContent="center" width="sm" onSubmit={addGuest}>
       <MyInput text="Email" type="text" state={loginData} setState={setLoginData} field="email"/>
       <MyInput text="Senha" type="password" state={loginData} setState={setLoginData} field="password"/>
       <MyTextarea guestData={guestData} setGuestData={setGuestData}/>
@@ -28,7 +35,6 @@ function App() {
         <Text color="#656363">cpf: {userData.cpf}</Text>
         <Text color="#656363">telefone: {userData.phone}</Text>
         <Text color="#656363">cep: {userData.cep}</Text>
-
       </Box>
     </Box>
   );

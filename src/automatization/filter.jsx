@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 export function filterData(data, setData, text){
 
     const regexName = /[A-Za-zÀ-ÖØ-öø-ÿ]+(?: [A-Za-zÀ-ÖØ-öø-ÿ]+)*/g;
@@ -12,18 +10,21 @@ export function filterData(data, setData, text){
     const cep = text.match(regexCep)
     const phone = text.match(regexPhone)
     const cpf = text.match(regexCPF)
-    
+
     setData({...data, name, cep, phone, cpf})
 
 }
 
 export function removeKeyWords(setText, text){
-    let copyText = `${text}`.replace("Nome completo: ", "")
+    let copyText = `${text}`
+    .replace("Dados para reservar", "")
+    .replace("Nome completo: ", "")
     .replace("CPF: ", "")
     .replace("Período de hospedagem: ", "")
     .replace("Contato: ", "")
     .replace("CEP: ", "")
     
+    .replace("Dados para reservar", "")
     .replace("Nome completo:", "")
     .replace("CPF:", "")
     .replace("Período de hospedagem:", "")
@@ -50,7 +51,8 @@ export function formatData(data, setData){
         let cpf = formatCpf(data.cpf);
         let phone = formatPhone(data.phone);
         let cep = formatCep(data.cep);
-        console.log(cpf)
+
+        // console.log("name: ", name)
         setData({...data, cpf: [cpf], name: [name], phone: [phone], cep: [cep]})
     }catch(e){
         console.log(e)
@@ -70,7 +72,7 @@ function formatCpf(cpf){
 }
 
 function formatName(name){
-    if(name.length>0){
+    if(name.length===1){
         return name[0].toUpperCase()
     }
 }
@@ -80,12 +82,14 @@ function formatPhone(phone){
         let filtredPhone = phone[0];
         filtredPhone = filtredPhone.split("")
         filtredPhone = filtredPhone.filter(char =>  !isNaN(char))
+        filtredPhone = filtredPhone.filter(char =>  char !==" ")
         if(filtredPhone.length === 10){
             filtredPhone.splice(2, 0, "9")
         }
         filtredPhone.splice(0, 0, "(")
-        filtredPhone.splice(3, 0, ") ")
-        filtredPhone.splice(9, 0, "-")
+        filtredPhone.splice(3, 0, ")")
+        filtredPhone.splice(4, 0, " ")
+        filtredPhone.splice(10, 0, "-")
         return filtredPhone.join("")
     }
 }
