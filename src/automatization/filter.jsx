@@ -56,19 +56,6 @@ export function filterData(setData, text){
 
 }
 
-export function formatData(data, setData){
-    try{
-        // let name = formatName(data, setData);
-        // let cpf = formatCpf(data.cpf);
-        // let phone = formatPhone(data.phone);
-        // let cep = formatCep(data.cep);
-        // console.log({name})
-        // setData({...data, cpf: [cpf], name: [name], phone: [phone], cep: [cep]})
-    }catch(e){
-        console.log(e)
-    }
-}
-
 
 function formatPhone(phone){
         phone = phone.split("")

@@ -3,7 +3,7 @@ import { MyInput } from "./components/myComponents/input";
 import { useEffect, useState } from "react";
 import { Button } from "./components/ui/button";
 import { MyTextarea } from "./components/myComponents/textArea";
-import { filterData, formatData, removeKeyWords } from "./automatization/filter";
+import { filterData, removeKeyWords } from "./automatization/filter";
 import axios from "axios";
 
 let contador = 0
@@ -22,10 +22,6 @@ function App() {
     filterData(setUserData, guestData)
   }, [guestData])
   
-  useEffect(()=>{
-    // formatData(userData, setUserData)
-  }, [guestData])
-
   function addGuest(e){
     e.preventDefault()
     axios.post("localhost:5000", {userData, loginData})
