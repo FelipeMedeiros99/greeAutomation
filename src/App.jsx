@@ -1,4 +1,4 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, Image } from "@chakra-ui/react";
 import { MyInput } from "./components/myComponents/input";
 import { useEffect, useState } from "react";
 import { Button } from "./components/ui/button";
@@ -36,6 +36,7 @@ function App() {
 
   return (
     <Box as="form" display="flex" flexDir="column" alignItems="center" justifyContent="center" width="sm" onSubmit={addGuest}>
+      <Image src="./image.png"/>
       <MyInput text="Email" type="email" state={loginData} setState={setLoginData} field="email"/>
       <MyInput text="Senha" type="password" state={loginData} setState={setLoginData} field="password"/>
       <MyTextarea guestData={guestData} setGuestData={setGuestData}/>
