@@ -28,8 +28,8 @@ function App() {
     e.preventDefault()
     try{
       setIsDisabled(true)
+      setTimeout(setIsDisabled(false), 2000)
       const response = await axios.post("http://localhost:5000", {userData, loginData})
-      setIsDisabled(false)
       alert(response.data)
     }catch(e){
       console.log(e)
