@@ -56,6 +56,7 @@ function formatCep(cep){
 function filterName(text){
     const regexName = /[A-Za-zÀ-ÖØ-öø-ÿ]+(?: [A-Za-zÀ-ÖØ-öø-ÿ]+)*/g;
     let name = text.match(regexName)
+    name = name?.filter((n)=>n.length >4)
     name = name?.map((n)=>n.toUpperCase())
     return name
 }
