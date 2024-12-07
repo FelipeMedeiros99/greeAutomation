@@ -28,7 +28,7 @@ function App() {
     e.preventDefault()
     try{
       setIsDisabled(true)
-      setTimeout(setIsDisabled(false), 2000)
+      setTimeout(()=>setIsDisabled(false), 2000)
       const response = await axios.post("http://localhost:5000", {userData, loginData})
       alert(response.data)
     }catch(e){
@@ -44,7 +44,18 @@ function App() {
       <MyInput text="Email" type="email" state={loginData} setState={setLoginData} field="email"/>
       <MyInput text="Senha" type="password" state={loginData} setState={setLoginData} field="password"/>
       <MyTextarea guestData={guestData} setGuestData={setGuestData}/>
-      <Button size="xs" type="submmit"  variant="surface" bg="#4a9d0d" marginTop="1em" disabled={isDisabled}> Cadastrar </Button>
+      <Button 
+        size="xs" 
+        type="submmit"  
+        variant="surface" 
+        bg="#4a9d0d"
+        color="white" 
+        marginTop="1em" 
+        border="none"
+        boxShadow="0 0 2px black"
+        disabled={isDisabled}
+        _hover={{bg:"#264f08"}}
+        > Cadastrar </Button>
       <Box marginTop="2em" width="100%">
         <Text color="#656363">nome: {userData.name}</Text>
         <Text color="#656363">cpf: {userData.cpf}</Text>
