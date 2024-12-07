@@ -5,11 +5,12 @@ import { Button } from "./components/ui/button";
 import { MyTextarea } from "./components/myComponents/textArea";
 import { filterData, removeKeyWords } from "./automatization/filter";
 import axios from "axios";
+import { ItemsList } from "./components/myComponents/span";
 
 function App() {
   const [loginData, setLoginData] = useState(JSON.parse(localStorage.getItem("gree-automatization")) || {email: "", password: ""})
   const [guestData, setGuestData] = useState("")
-  const [userData, setUserData] = useState({name: "", cpf: "", phone: "", cep: ""})
+  const [userData, setUserData] = useState({name: [], cpf: [], phone: [], cep: []})
   const [isDisabled, setIsDisabled] = useState(false)
 
   useEffect(()=>{
@@ -30,10 +31,10 @@ function App() {
       setIsDisabled(true)
       setTimeout(()=>setIsDisabled(false), 2000)
       const response = await axios.post("http://localhost:5000", {userData, loginData})
-      alert(response.data)
+      alert(response?.data || response?.message || "Automação finalizada" )
     }catch(e){
       console.log(e)
-      alert(e.response.data.message || e.message)
+      alert(e?.response?.data?.message || e?.message || "Automação finalizada" )
       setIsDisabled(false)
     }
   }
@@ -57,10 +58,10 @@ function App() {
         _hover={{bg:"#264f08"}}
         > Cadastrar </Button>
       <Box marginTop="2em" width="100%">
-        <Text color="#656363">nome: {userData.name}</Text>
-        <Text color="#656363">cpf: {userData.cpf}</Text>
-        <Text color="#656363">telefone: {userData.phone}</Text>
-        <Text color="#656363">cep: {userData.cep}</Text>
+        <Text color="#656363">nome(s): <ItemsList items={userData.name}/></Text>
+        <Text color="#656363">cpf(s):  <ItemsList items={userData.cpf}/></Text>
+        <Text color="#656363">telefone(s): <ItemsList items={userData.phone}/></Text>
+        <Text color="#656363">cep(s): <ItemsList items={userData.cep}/></Text>
       </Box>
     </Box>
   );

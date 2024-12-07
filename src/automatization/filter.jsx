@@ -76,8 +76,15 @@ function filterCep(text){
 }
 
 function filterCpf(text){
+    text = text?.split("\n")
     const regexCPF = /\b\d{3}[^A-Za-z0-9]?\d{3}[^A-Za-z0-9]?\d{3}[^A-Za-z0-9]?\d{2}\b/
-    let cpf = text.match(regexCPF)
+    let cpf = []
+
+    for(let l of text){
+        if(l.match(regexCPF)){
+            cpf.push(l)            
+        }
+    }
     cpf = cpf?.filter((c)=>validCpf.isValid(c))
     cpf = cpf?.map((c)=>validCpf.format(c))
     return cpf
