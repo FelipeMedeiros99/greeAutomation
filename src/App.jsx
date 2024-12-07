@@ -7,10 +7,14 @@ import { filterData, removeKeyWords } from "./automatization/filter";
 import axios from "axios";
 
 function App() {
-  const [loginData, setLoginData] = useState({email: "", password: ""})
+  const [loginData, setLoginData] = useState(JSON.parse(localStorage.getItem("gree-automatization")) || {email: "", password: ""})
   const [guestData, setGuestData] = useState("")
   const [userData, setUserData] = useState({name: "", cpf: "", phone: "", cep: ""})
   const [isDisabled, setIsDisabled] = useState(false)
+
+  useEffect(()=>{
+    localStorage.setItem("gree-automatization", JSON.stringify(loginData))
+  }, [loginData])
 
   useEffect(()=>{
     removeKeyWords(setGuestData, guestData)
@@ -29,7 +33,7 @@ function App() {
       alert(response.data)
     }catch(e){
       console.log(e)
-      alert(e.message)
+      alert(e.response.data.message || e.message)
       setIsDisabled(false)
     }
   }

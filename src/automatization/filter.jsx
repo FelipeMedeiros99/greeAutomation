@@ -70,7 +70,7 @@ function filterCep(text){
             cep.push(l)
         }
     }
-    cep = cep?.filter((c)=>filterNumbers(c).length===8)
+    cep = cep?.filter((c)=>filterNumbers(c).trim().length===8)
     cep = cep?.map((c)=>formatCep(filterNumbers(c)))
     return cep
 }
